@@ -6,7 +6,8 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
+  Plug 'git@github.com:ctrlpvim/ctrlp.vim.git' " fuzzy find files
   Plug 'fcpg/vim-fahrenheit'
   Plug 'tpope/vim-fugitive'
   Plug 'yaegassy/coc-ansible', {'do': 'yarn install --frozen-lockfile'}
@@ -15,17 +16,11 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   Plug 'ulwlu/elly.vim'
   Plug 'vim-airline/vim-airline'
   Plug 'vim-airline/vim-airline-themes'
-  " Stable version of coc
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-  " Keeping up to date with master
-  Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-
+  Plug 'neoclide/coc.nvim', {'branch': 'release',  'do': 'yarn install --frozen-lockfile'}
   Plug 'Xuyuanp/nerdtree-git-plugin'
   Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
   Plug 'ryanoasis/vim-devicons'
   Plug 'airblade/vim-gitgutter'
-  Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
   Plug 'scrooloose/nerdcommenter'
 call plug#end()
 
@@ -33,7 +28,8 @@ call plug#end()
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
 
-source $HOME/.config/nvim/plug-config/coc.vim
+" source $HOME/.config/nvim/plug-config/coc.vim
+
 " Exit Vim if NERDTree is the only window left.
 autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
     \ quit | endif
