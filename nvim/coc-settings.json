@@ -1,7 +1,6 @@
 {
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
-    "markdown",
     "javascript",
     "graphql",
     "html",
@@ -13,6 +12,7 @@
   // python config
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": true,
+  "python.formatting.provider": "black",
 
   "snippets.ultisnips.directories": ["UltiSnips", "~/.config/nvim/utils/snips"],
   "languageserver": {
@@ -25,6 +25,17 @@
           "directory": "/tmp/ccls"
         }
       }
-    }
+    },
+		"terraform": {
+			"command": "terraform-ls",
+			"args": ["serve"],
+			"filetypes": [
+				"terraform",
+				"tf"
+			],
+			"initializationOptions": {},
+			"settings": {}
+		}
+	}
   }
 }

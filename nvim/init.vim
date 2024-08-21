@@ -7,21 +7,21 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin('~/.local/share/nvim/plugged')
-  Plug 'git@github.com:ctrlpvim/ctrlp.vim.git' " fuzzy find files
+  Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
   Plug 'fcpg/vim-fahrenheit'
   Plug 'tpope/vim-fugitive'
   Plug 'yaegassy/coc-ansible', {'do': 'yarn install --frozen-lockfile'}
   Plug 'preservim/nerdtree'
   Plug 'pearofducks/ansible-vim', { 'do': './UltiSnips/generate.sh' }
-  Plug 'ulwlu/elly.vim'
-  Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
-  Plug 'neoclide/coc.nvim', {'branch': 'release',  'do': 'yarn install --frozen-lockfile'}
+  Plug 'djpohly/elly.vim'
+  Plug 'neoclide/coc.nvim.git', {'branch': 'release',  'do': 'yarn install --frozen-lockfile'}
   Plug 'Xuyuanp/nerdtree-git-plugin'
-  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+  " Plug 'tiagofumo/vim-nerdtree-syntax-highlight'"
   Plug 'ryanoasis/vim-devicons'
   Plug 'airblade/vim-gitgutter'
   Plug 'scrooloose/nerdcommenter'
+  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+  Plug 'hashivim/vim-terraform'
 call plug#end()
 
 " Start NERDTree. If a file is specified, move the cursor to its window.
@@ -190,16 +190,22 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-
+  Plug 'glepnir/galaxyline.nvim' , { 'branch': 'main' }
+  Plug 'nvim-tree/nvim-web-devicons' " lua
   Plug 'preservim/nerdtree'
-  Plug 'ulwlu/elly.vim'
   Plug 'vim-airline/vim-airline'
-  Plug 'vim-airline/vim-airline-themes'
+  Plug 'djpohly/elly.vim'
   " Stable version of coc
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
   " Keeping up to date with master
   Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
 
 call plug#end()
 
@@ -212,26 +218,6 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
     \ quit | endif
 
 
-  if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-  endif
-
-  " unicode symbols
-  let g:airline_left_sep = '»'
-  let g:airline_left_sep = '▶'
-  let g:airline_right_sep = '«'
-  let g:airline_right_sep = '◀'
-  let g:airline_symbols.colnr = ' ㏇:'
-  let g:airline_symbols.colnr = ' ℅:'
-  let g:airline_symbols.crypt = '🔒'
-  let g:airline_symbols.linenr = '☰'
-  let g:airline_symbols.linenr = ' ␊:'
-  let g:airline_symbols.linenr = ' ␤:'
-  let g:airline_symbols.linenr = '¶'
-  let g:airline_symbols.maxlinenr = ''
-  let g:airline_symbols.maxlinenr = '㏑'
-  let g:airline_symbols.branch = '⎇'
-  let g:airline_symbols.paste = 'ρ'
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
 nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
@@ -253,38 +239,39 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
   endif
 
   " unicode symbols
-  let g:airline_left_sep = '»'
-  let g:airline_left_sep = '▶'
-  let g:airline_right_sep = '«'
-  let g:airline_right_sep = '◀'
-  let g:airline_symbols.colnr = ' ㏇:'
-  let g:airline_symbols.colnr = ' ℅:'
-  let g:airline_symbols.crypt = '🔒'
-  let g:airline_symbols.linenr = '☰'
-  let g:airline_symbols.linenr = ' ␊:'
-  let g:airline_symbols.linenr = ' ␤:'
-  let g:airline_symbols.linenr = '¶'
-  let g:airline_symbols.maxlinenr = ''
-  let g:airline_symbols.maxlinenr = '㏑'
-  let g:airline_symbols.branch = '⎇'
-  let g:airline_symbols.paste = 'ρ'
-  let g:airline_symbols.paste = 'Þ'
-  let g:airline_symbols.paste = '∥'
-  let g:airline_symbols.spell = 'Ꞩ'
-  let g:airline_symbols.notexists = 'Ɇ'
-  let g:airline_symbols.whitespace = 'Ξ'
-
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.colnr = ' :'
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ' :'
-  let g:airline_symbols.maxlinenr = '☰ '
-  let g:airline_symbols.dirty='⚡'
+  let g:airline_powerline_fonts = 1
+"  let g:airline_left_sep = '»'
+"  let g:airline_left_sep = '▶'
+"  let g:airline_right_sep = '«'
+"  let g:airline_right_sep = '◀'
+"  let g:airline_symbols.colnr = ' ㏇:'
+"  let g:airline_symbols.colnr = ' ℅:'
+"  let g:airline_symbols.crypt = '🔒'
+"  let g:airline_symbols.linenr = '☰'
+"  let g:airline_symbols.linenr = ' ␊:'
+"  let g:airline_symbols.linenr = ' ␤:'
+"  let g:airline_symbols.linenr = '¶'
+"  let g:airline_symbols.maxlinenr = ''
+"  let g:airline_symbols.maxlinenr = '㏑'
+"  let g:airline_symbols.branch = '⎇'
+"  let g:airline_symbols.paste = 'ρ'
+"  let g:airline_symbols.paste = 'Þ'
+"  let g:airline_symbols.paste = '∥'
+"  let g:airline_symbols.spell = 'Ꞩ'
+"  let g:airline_symbols.notexists = 'Ɇ'
+"  let g:airline_symbols.whitespace = 'Ξ'
+"
+"  " powerline symbols
+"  let g:airline_left_sep = ''
+"  let g:airline_left_alt_sep = ''
+"  let g:airline_right_sep = ''
+"  let g:airline_right_alt_sep = ''
+"  let g:airline_symbols.branch = ''
+"  let g:airline_symbols.colnr = ' :'
+"  let g:airline_symbols.readonly = ''
+"  let g:airline_symbols.linenr = ' :'
+"  let g:airline_symbols.maxlinenr = '☰ '
+"  let g:airline_symbols.dirty='⚡'
 
   " old vim-powerline symbols
   let g:airline_left_sep = '⮀'
@@ -301,4 +288,18 @@ set termguicolors
 
 let g:airline_theme='elly'
 
-"colorscheme fahrenheit
+"Set ansible filetype if there is a requirements.yaml in the root dir
+function! SetAnsibleFiletype()
+    " Get the current directory and check for the requirements file in the root
+    let l:root = finddir('.git', '.;')
+    if l:root != ''
+        let l:root_dir = fnamemodify(l:root, ':h')
+        if filereadable(l:root_dir . '/requirements.yml') || filereadable(l:root_dir . '/requirements.yaml')
+            set filetype=yaml.ansible
+        endif
+    endif
+endfunction
+
+" Set autocommand for yaml files to run the function
+autocmd BufRead,BufNewFile *.yml,*.yaml call SetAnsibleFiletype()
+
