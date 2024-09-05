@@ -6,7 +6,8 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-call plug#begin('~/.local/share/nvim/plugged')
+" call plug#begin('~/.local/share/nvim/plugged')
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
   Plug 'fcpg/vim-fahrenheit'
   Plug 'tpope/vim-fugitive'
@@ -16,14 +17,29 @@ call plug#begin('~/.local/share/nvim/plugged')
   Plug 'djpohly/elly.vim'
   Plug 'neoclide/coc.nvim.git', {'branch': 'release',  'do': 'yarn install --frozen-lockfile'}
   Plug 'Xuyuanp/nerdtree-git-plugin'
-  " Plug 'tiagofumo/vim-nerdtree-syntax-highlight'"
   Plug 'ryanoasis/vim-devicons'
   Plug 'airblade/vim-gitgutter'
   Plug 'scrooloose/nerdcommenter'
   Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+  Plug 'mfussenegger/nvim-lint'
   Plug 'hashivim/vim-terraform'
-call plug#end()
+  Plug 'jvirtanen/vim-hcl'
 
+  Plug 'glepnir/galaxyline.nvim' , { 'branch': 'main' }
+  Plug 'nvim-tree/nvim-web-devicons' " lua
+  Plug 'preservim/nerdtree'
+  Plug 'vim-airline/vim-airline'
+  Plug 'djpohly/elly.vim'
+ " Keeping up to date with master
+  Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+  " Plug 'tiagofumo/vim-nerdtree-syntax-highlight' BROKEN → GROUPNAME ERROR
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'scrooloose/nerdcommenter'
+  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
+  Plug 'kassio/neoterm'
+call plug#end()
 " Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * NERDTree | if argc() > 0 || exists("s:std_in") | wincmd p | endif
@@ -46,8 +62,8 @@ set tabstop=2
 set shiftwidth=2
 " always uses spaces instead of tab characters
 set expandtab
-" sync open file with NERDTree
-" " Check if NERDTree is open or active
+ " sync open file with NERDTree
+ " Check if NERDTree is open or active
 function! IsNERDTreeOpen()        
   return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
 endfunction
@@ -78,8 +94,6 @@ let g:coc_filetype_map = {
   \ 'yaml.ansible': 'ansible',
   \ }
 " from readme
-" if hidden is not set, TextEdit might fail.
-set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
 
 " don't give |ins-completion-menu| messages.
@@ -102,13 +116,12 @@ function! s:check_back_space() abort
 endfunction
 
 " Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
+" inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 " Or use `complete_info` if your vim support it, like:
-" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -182,32 +195,6 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Using CocList
 " Show all diagnostics
-set encoding=utf-8
-set guifont=Inconsolata\ for\ Powerline\ Sans:s12
-let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
-if empty(glob(data_dir . '/autoload/plug.vim'))
-  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
-  Plug 'glepnir/galaxyline.nvim' , { 'branch': 'main' }
-  Plug 'nvim-tree/nvim-web-devicons' " lua
-  Plug 'preservim/nerdtree'
-  Plug 'vim-airline/vim-airline'
-  Plug 'djpohly/elly.vim'
-  " Stable version of coc
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-  " Keeping up to date with master
-  Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
-  Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-  Plug 'ryanoasis/vim-devicons'
-  Plug 'airblade/vim-gitgutter'
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'scrooloose/nerdcommenter'
-  Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-
-call plug#end()
 
 " Start NERDTree. If a file is specified, move the cursor to its window.
 autocmd StdinReadPre * let s:std_in=1
@@ -302,4 +289,18 @@ endfunction
 
 " Set autocommand for yaml files to run the function
 autocmd BufRead,BufNewFile *.yml,*.yaml call SetAnsibleFiletype()
+let mapleader = " "
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
 
+nnoremap <C-h> :tabprevious<CR>
+nnoremap <C-l> :tabnext<CR>
+noremap <leader>0 :tablast<cr>
