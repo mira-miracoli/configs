@@ -6,6 +6,7 @@ if empty(glob(data_dir . '/autoload/plug.vim'))
   silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+autocmd VimEnter * call timer_start(200, { tid -> execute('AirlineRefresh')})
 " call plug#begin('~/.local/share/nvim/plugged')
 call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
@@ -40,6 +41,7 @@ call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
   Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
   Plug 'kassio/neoterm'
   Plug 'akinsho/toggleterm.nvim', {'tag' : '*'}
+  Plug 'tpope/vim-abolish'
 call plug#end()
 " Start NERDTree. If a file is specified, move the cursor to its window.
 lua require("toggleterm").setup({direction = 'float'})
@@ -365,31 +367,31 @@ endfunction
 
 autocmd BufWritePre * call AutoStripTrailingSpaces()
 
-augroup jump_cursor_on_edit
-    autocmd!
-    autocmd BufReadPost *
-        \ if expand("<afile>:p:h") !=? $TEMP |
-        \     if line("'\"") > 1 && line("'\"") <= line("$") |
-        \         let JumpCursorOnEdit_foo = line("'\"") |
-        \         let b:doopenfold = 1 |
-        \         if (foldlevel(JumpCursorOnEdit_foo) > foldlevel(JumpCursorOnEdit_foo - 1)) |
-        \             let JumpCursorOnEdit_foo = JumpCursorOnEdit_foo - 1 |
-        \             let b:doopenfold = 2 |
-        \         endif |
-        \         execute JumpCursorOnEdit_foo |
-        \     endif |
-        \ endif
-
-    " Need to postpone using "zv" until after reading the modelines.
-    autocmd BufWinEnter *
-        \ if exists("b:doopenfold") |
-        \     execute "normal! zv" |
-        \     if(b:doopenfold > 1) |
-        \         execute  "+".1 |
-        \     endif |
-        \     unlet b:doopenfold |
-        \ endif |
-        \ execute 'normal! zz'
-augroup END
+"augroup jump_cursor_on_edit
+"    autocmd!
+"    autocmd BufReadPost *
+"        \ if expand("<afile>:p:h") !=? $TEMP |
+"        \     if line("'\"") > 1 && line("'\"") <= line("$") |
+"        \         let JumpCursorOnEdit_foo = line("'\"") |
+"        \         let b:doopenfold = 1 |
+"        \         if (foldlevel(JumpCursorOnEdit_foo) > foldlevel(JumpCursorOnEdit_foo - 1)) |
+"        \             let JumpCursorOnEdit_foo = JumpCursorOnEdit_foo - 1 |
+"        \             let b:doopenfold = 2 |
+"        \         endif |
+"        \         execute JumpCursorOnEdit_foo |
+"        \     endif |
+"        \ endif
+"
+"    " Need to postpone using "zv" until after reading the modelines.
+"    autocmd BufWinEnter *
+"        \ if exists("b:doopenfold") |
+"        \     execute "normal! zv" |
+"        \     if(b:doopenfold > 1) |
+"        \         execute  "+".1 |
+"        \     endif |
+"        \     unlet b:doopenfold |
+"        \ endif |
+"        \ execute 'normal! zz'
+"augroup END
 
 
